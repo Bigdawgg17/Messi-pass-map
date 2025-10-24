@@ -1,0 +1,29 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Arc
+from mplsoccer import Pitch, FontManager, Sbopen
+
+df = pd.read_csv('messibetis.csv')
+df
+
+df['x'] = df['x']*1.2
+df['y'] = df['y']*.8
+df['endX'] = df['endX']*1.2
+df['endY'] = df['endY']*.8
+
+pitch = Pitch(pitch_type='statsbomb', pitch_color='#22312b', line_color='#c7d5cc')
+fig, ax = pitch.draw(figsize=(16, 11), constrained_layout=True, tight_layout=False)
+fig.set_facecolor('#22312b')
+
+pitch.draw(ax=ax)
+plt.gca().invert_yaxis()
+
+for x in range(len(df['x'])):
+    if df['outcome'][x] == 'Successful':
+        plt.plot((df['x'][x],df['endX'][x]),(df['y'][x],df['endY'][x]),color='green')
+        plt.scatter(df['x'][x],df['y'][x], color='green')
+    if df['outcome'][x] == 'Unsuccessful':
+        plt.plot((df['x'][x],df['endX'][x]),(df['y'][x],df['endY'][x]),color='red')
+        plt.scatter(df['x'][x],df['y'][x], color='red')
+
